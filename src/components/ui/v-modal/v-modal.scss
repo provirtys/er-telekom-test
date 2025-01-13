@@ -1,0 +1,94 @@
+.modal {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--white);
+  box-shadow: 0px 0px 15px 2px var(--black-10);
+  padding: 20px;
+
+  &--side {
+    left: unset;
+    right: 0;
+    max-width: 600px;
+  }
+
+  &--transparent {
+    background-color: var(--black-50);
+
+    .modal__content{
+      background-color: var(--white);
+      border-radius: 20px;
+      max-height: 60%;
+      align-self: center;
+    }
+  }
+
+  &__backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  &__content {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+  }
+
+  &__close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    font-size: 40px;
+  }
+
+  &__loader {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--black-50);
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active,
+.fade-side-enter-active,
+.fade-side-leave-active {
+  transition: .6s ease;
+  transition-property: opacity, transform;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+}
+
+.fade-side-enter-from,
+.fade-side-leave-to {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.fade-side-enter-to,
+.fade-side-leave-from {
+  transform: translateX(0);
+  opacity: 1;
+}

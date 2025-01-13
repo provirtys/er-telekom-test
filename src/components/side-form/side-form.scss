@@ -1,0 +1,43 @@
+.side-form {
+  width: 100%;
+
+  &__title {
+    @include font(32px, 40px, 600);
+    margin-bottom: 20px;
+  }
+
+  &__field-group {
+    margin-bottom: 1rem;
+    @include font(18px, 24px, 400);
+  }
+
+  .btn-submit {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+  }
+
+  .btn-submit:hover {
+    background-color: #0056b3;
+  }
+}
+
+@include phone {
+
+  .side-form {
+
+    &__title {
+      @include font(24px, 32px, 600);
+      max-width: 80%;
+    }
+
+    &__field-group {
+      @include font(16px, 20px, 400);
+    }
+  }
+}
