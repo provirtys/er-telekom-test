@@ -1,3 +1,9 @@
+import './types'
+
+/**
+ * Список полей сущностей
+ * @type {import('./types').EntityFields} 
+*/
 export const entityFields = {
   name: { label: 'Название', type: 'text', required: true, placeholder: 'Введите название' },
   area: { label: 'Площадь (км²)', type: 'text', required: false, placeholder: '42', format:true },
@@ -10,6 +16,10 @@ export const entityFields = {
   elevator: { label: 'Наличие лифта', type: 'checkbox', required: false }
 };
 
+/**
+ * Поля сущностей по типам
+ * @type {import('./types').EntityTypes}
+ */
 export const entityTypeFields = {
   city: ['name', 'area', 'population'],
   district: ['name', 'area', 'population'],
@@ -18,6 +28,10 @@ export const entityTypeFields = {
   entrance: ['name', 'apartments', 'condition', 'elevator']
 };
 
+/**
+ * Дочерние сущности
+ * @type {import('./types').EntityChildren}
+ */
 export const childrenTypes = {
   country: 'city',
   city: 'district',
@@ -26,10 +40,13 @@ export const childrenTypes = {
   house: 'entrance',
 };
 
+/**
+ * @type {Record<EntityTypesSingular, string>}
+ */
 export const typeKeys = {
   city: 'город',
   district: 'район',
   street: 'улицу',
   house: 'дом',
-  entrance: 'подъезд'
+  entrance: 'подъезд',
 };

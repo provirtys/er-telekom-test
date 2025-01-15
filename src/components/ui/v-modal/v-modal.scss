@@ -18,12 +18,17 @@
   &--transparent {
     background-color: var(--black-50);
 
-    .modal__content{
+    .modal__content {
       background-color: var(--white);
       border-radius: 20px;
       max-height: 60%;
       align-self: center;
     }
+  }
+
+  &--small &__content {
+    max-width: 500px;
+    height: unset;
   }
 
   &__backdrop {
@@ -40,6 +45,8 @@
     height: 100%;
     width: 100%;
     overflow: auto;
+    margin: 0 auto;
+    max-width: 80%;
   }
 
   &__close {

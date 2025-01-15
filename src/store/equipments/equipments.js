@@ -1,14 +1,24 @@
 import { defineStore } from 'pinia';
 import { useFirestore } from 'vuefire';
 import { collection, addDoc, query, where, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
-import { mapEquipment } from './map';
 import { useAlertStore } from '@store/alert/alert'
+import { mapEquipment } from './map';
+import './types'
 
+/**
+ * Store для управления оборудованием
+ */
 export const useEquipmentsStore = defineStore('equipments', () => {
   const db = useFirestore();
 
   const { createAlert } = useAlertStore()
 
+  /**
+   * Создание оборудования
+   * @param {Equipment} data  - Данные оборудования
+   * 
+   * @returns {Promise<void>}
+   */
   const createEquipment = async (data) => {
     try{
       await addDoc(collection(db, 'equipments'), data);
@@ -28,16 +38,24 @@ export const useEquipmentsStore = defineStore('equipments', () => {
     }
   }
 
+  /**
+   * Получить оборудование для сущности
+   * @param {string} entityId - Идентификатор сущности
+   * @returns {Equipment[]}
+   */
   const getEquipmentByEntityId = async (entityId) => {
     const q = query(collection(db, 'equipments'), where('entityId', '==', entityId));
 
     const querySnapshot = await getDocs(q);
+
+    /**
+     * @type {Equipment[]}
+     */
     const equipments = [];
 
     querySnapshot.forEach((doc) => {
       equipments.push(mapEquipment(doc));
     });
-
     return equipments
   }
 

@@ -28,8 +28,6 @@ export default defineConfig({
       '@router': fileURLToPath(new URL('./src/router', import.meta.url)),
       '@assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
       '@helpers': fileURLToPath(new URL('./src/helpers', import.meta.url)),
-      '@hooks': fileURLToPath(new URL('./src/hooks', import.meta.url)),
-      '@api': fileURLToPath(new URL('./src/api', import.meta.url))
     },
     extensions: ['.js', '.vue', '.scss', '.html']
   },

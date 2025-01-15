@@ -10,23 +10,39 @@
   </teleport>
 </template>
 
-<script setup>
+<script>
+import { ref, computed, defineComponent } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useAlertStore } from '@store/alert/alert'
-import { storeToRefs } from 'pinia';
-import { ref, computed } from 'vue';
 
-const alertStore = useAlertStore()
-const { alert } = storeToRefs(alertStore)
-const { clearAlert } = alertStore
-const alertRef = ref('')
+/**
+ * Компонент для отображения сообщений об ошибках и успешных операциях
+ */
+export default defineComponent({
+  name: 'Alert',
+  setup() {
+    const alertStore = useAlertStore()
+    const { alert } = storeToRefs(alertStore)
+    const { clearAlert } = alertStore
 
-const showAlert = computed(() => alert.value && !!Object.keys(alert.value).length)
+    const alertRef = ref('')
 
-const classes = computed(() => [
-  'alert',
-  alert.value?.type,
-])
+    const showAlert = computed(() => alert.value && !!Object.keys(alert.value).length)
 
+    const classes = computed(() => [
+      'alert',
+      alert.value?.type,
+    ])
+
+    return {
+      alert,
+      alertRef,
+      showAlert,
+      classes,
+      clearAlert,
+    }
+  },
+})
 </script>
 
 <style lang='scss' src='./alert.scss' scoped />

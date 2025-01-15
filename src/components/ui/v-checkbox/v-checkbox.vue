@@ -8,18 +8,23 @@
 </template>
 
 <script>
+import { defineComponent } from 'vue';
+
 /**
- * Компонент чекбокса
+ * Компонент чекбокса.
+ * Используется для отображения чекбокса с текстовым заголовком.
  * 
- * @props {String} title - Заголовок чекбокса
- * @props {Boolean} modelValue - Значение чекбокса
+ * @props {String} title - Заголовок чекбокса, отображаемый рядом с ним.
+ * @props {Boolean} value - Значение чекбокса. Используется с `v-model`.
+ * 
+ * @emits {update:value} Событие обновления значения чекбокса. Эмитится при изменении значения.
  */
-export default {
+export default defineComponent({
   name: 'VCheckbox',
   emits: ['update:value'],
-  props:{
+  props: {
     /**
-     * Заголовок чекбокса
+     * Заголовок чекбокса, отображаемый рядом с ним.
      */
     title: {
       type: String,
@@ -27,7 +32,7 @@ export default {
       default: ''
     },
     /**
-     * Значение чекбокса
+     * Значение чекбокса. Используется с `v-model`.
      */
     value: {
       type: Boolean,
@@ -35,8 +40,7 @@ export default {
       default: false
     }
   },
-}
-
+});
 </script>
 
 <style lang="scss" scoped src="./v-checkbox.scss" />

@@ -1,9 +1,12 @@
+import { storeToRefs } from 'pinia';
 import { createWebHistory, createRouter } from 'vue-router';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useAlertStore } from '@store/alert/alert';
-import { useAuthStore } from '../store/auth/auth';
-import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@store/auth/auth';
 
+/**
+ * @type {import('vue-router').RouteRecordRaw[]}
+ */
 const routes = [
   {
     path: '/',
@@ -12,6 +15,7 @@ const routes = [
     meta: {
       authRequired: true
     }
+
   },
   {
     path: '/register',
@@ -19,7 +23,8 @@ const routes = [
     component: () => import('../pages/register/register.vue'),
     meta: {
       layout: 'auth'
-    }
+    },
+
   },
   {
     path: '/login',
@@ -41,6 +46,10 @@ export const router = createRouter({
   routes
 });
 
+/**
+ * 
+ * @returns {Promise<import('firebase/auth').User | null>}
+ */
 const getCurrentUser = () => {
   return new Promise((resolve, reject) => {
     const removeListener = onAuthStateChanged(

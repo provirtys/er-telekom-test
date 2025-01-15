@@ -1,17 +1,40 @@
-import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { useAlertStore } from '@store/alert/alert';
 import { useRouter } from 'vue-router';
+import { defineStore } from 'pinia';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { useAlertStore } from '@store/alert/alert';
+import '@store/alert/types';
 import { SIGN_UP_ERRORS, SIGN_IN_ERRORS } from './errors';
+import './types'
 
+/**
+ * Store для управления регистрацией и авторизацией
+ */
 export const useAuthStore = defineStore('auth', () => {
   const { createAlert } = useAlertStore();
   const router = useRouter();
 
+  /**
+   * Текущий пользователь
+   * 
+   * @type {import('firebase/auth').User | null}
+   */
   const currentUser = ref(null);
+
+  /**
+   * Флаг загрузки
+   * 
+   * @type {import('vue').Ref<boolean>}
+   */
   const loading = ref(false);
 
+  /**
+   * Функция для входа в систему
+   * 
+   * @param {UserData} data Данные для входа
+   * 
+   * @returns {Promise<void>}
+   */
   const signIn = async (data) => {
     loading.value = true;
     const auth = getAuth();
@@ -30,6 +53,13 @@ export const useAuthStore = defineStore('auth', () => {
     loading.value = false;
   };
 
+  /**
+   * Функция для регистрации в системе
+   * 
+   * @param {UserData} data Данные для регистрации
+   * 
+   * @returns {Promise<void>}
+   */
   const signUp = async (data) => {
     loading.value = true;
     await createUserWithEmailAndPassword(getAuth(), data.email, data.password)
@@ -53,8 +83,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   return {
     currentUser,
+    loading,
     signIn,
-    signUp,
-    loading
+    signUp
   };
 });

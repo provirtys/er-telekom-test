@@ -8,12 +8,26 @@
   </div>
 </template>
 
-<script setup>
-import { useAuthStore } from '@/store/auth/auth';
+<script>
+import { defineComponent } from 'vue';
 import { storeToRefs } from 'pinia';
-import VLoader from '@components/ui/v-loader/v-loader.vue';
+import { useAuthStore } from '@store/auth/auth';
+import VLoader from '@ui/v-loader/v-loader.vue';
 
-const { loading } = storeToRefs(useAuthStore())
+export default defineComponent({
+  name: 'LayoutAuth',
+  components: {
+    VLoader
+  },
+  setup() {
+    const authStore = useAuthStore();
+    const { loading } = storeToRefs(authStore);
+
+    return {
+      loading
+    };
+  }
+});
 </script>
 
 <style lang="scss" scoped src="./layout-auth.scss" />

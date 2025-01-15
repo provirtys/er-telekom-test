@@ -14,7 +14,6 @@ import LayoutAuth from '@layout/layout-auth/layout-auth.vue'
 import Header from '@components/header/header.vue'
 import alert from '@components/alert/alert.vue';
 import { useRoute } from 'vue-router';
-import { onMounted } from 'vue';
 
 const route = useRoute()
 

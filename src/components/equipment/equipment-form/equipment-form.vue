@@ -1,94 +1,116 @@
 <template>
-  <SideForm :title="title" :btnText="btnText" :fields="filteredFields" :formData="formData" @onSubmit="submitHandler" />
+  <SideForm :title="title" :btnText="btnText" :fields="equipmentFields" :formData="formData"
+    @onSubmit="submitHandler" />
 </template>
 
-<script setup>
+<script>
+import { computed, reactive, onMounted, watch, defineComponent } from 'vue';
 import SideForm from '@components/side-form/side-form.vue';
+import { createDefaultValues, setDataForObject, resetObject } from '@helpers/object'
+import { equipmentFields } from '../equipmentFields';
+import './types'
 
-import { computed, reactive, onMounted } from 'vue';
-import { watch } from 'vue';
-import { equipmentFields } from '../equipmentFields'
-import { createDefaultValues } from '@helpers/object';
-
-const props = defineProps({
-  action: {
-    type: String,
-    required: true,
-    default: 'add',
-    validator: (value) => ['add', 'edit'].includes(value)
+/**
+ * Форма для создания и редактирования оборудования
+ * 
+ * @props {String} action - Тип действия. Поддерживаются: `add`, `edit`
+ * @props {Object} initialData - Данные для редактирования. Используется, когда `action = 'edit'`
+ * 
+ * @emits {onSubmit} Событие отправки формы. Эмитится объект с данными формы
+ */
+export default defineComponent({
+  components: {
+    SideForm,
   },
-  initialData: {
-    type: Object,
-    required: false
-  }
+  props: {
+    /**
+     * Тип действия. Поддерживаются: `add`, `edit`
+     */
+    action: {
+      type: String,
+      required: true,
+      default: 'add',
+      validator: (value) => ['add', 'edit'].includes(value),
+    },
+    /**
+     * Данные для редактирования. Используется, когда `action = 'edit'`
+     */
+    initialData: {
+      type: Object,
+      required: false,
+    },
+  },
+  emits: ['onSubmit'],
+  setup(props, { emit }) {
+    const actionKeys = {
+      add: 'Добавить',
+      edit: 'Редактировать',
+    };
+
+    /**
+     * Заголовок формы
+     * @type {import('vue').ComputedRef<string>}
+     */
+    const title = computed(() => `${actionKeys[props.action]} оборудование`);
+
+    /**
+     * Текст кнопки
+     * @type {import('vue').ComputedRef<string>}
+     */
+    const btnText = computed(() => (props.action === 'add' ? 'Добавить' : 'Сохранить'));
+
+    /**
+     * Данные формы
+     * @type {import('vue').Reactive<import('./types').EquipmentFormData>}
+     */
+    const formData = reactive(createDefaultValues(equipmentFields));
+
+    /**
+     * Обработчик отправки формы
+     * 
+     * @returns {void}
+     */
+    const submitHandler = () => {
+      const filteredData = Object.keys(equipmentFields).reduce((acc, key) => {
+        if (formData.hasOwnProperty(key)) {
+          acc[key] = formData[key];
+        }
+        return acc;
+      }, {});
+
+      filteredData.name = formData.name;
+
+      emit('onSubmit', filteredData);
+    };
+
+    onMounted(() => {
+      if (props.action === 'edit') {
+        setDataForObject(formData, props.initialData);
+      } else {
+        resetObject(formData);
+      }
+    });
+
+    watch(
+      [() => props.action, props.initialData],
+      ([newAction]) => {
+        if (newAction === 'edit') {
+          setDataForObject(formData, props.initialData);
+        } else if (newAction === 'add') {
+          resetObject(formData);
+        }
+      }
+    );
+
+    return {
+      title,
+      btnText,
+      formData,
+      equipmentFields,
+      submitHandler
+    };
+  },
 });
-
-const emit = defineEmits(['onSubmit']);
-
-const actionKeys = {
-  add: 'Добавить',
-  edit: 'Редактировать'
-};
-
-const title = computed(() => `${actionKeys[props.action]} оборудование`);
-
-const btnText = computed(() => props.action === 'add' ? 'Добавить' : 'Сохранить');
-
-const formData = reactive(createDefaultValues(equipmentFields));
-
-const filteredFields = computed(() => {
-  return Object.keys(equipmentFields).map(key => ({
-    ...equipmentFields[key],
-    key
-  }));
-});
-
-
-const submitHandler = () => {
-  const filteredData = filteredFields.value.reduce((acc, field) => {
-    if (formData.hasOwnProperty(field.key)) {
-      acc[field.key] = formData[field.key];
-    }
-    return acc;
-  }, {});
-
-  filteredData.name = formData.name;
-
-  emit('onSubmit', filteredData);
-};
-
-const setFormDataForChange = () => {
-  Object.keys(formData).forEach(key => {
-    formData[key] = props.initialData[key] ?? ''
-  })
-}
-
-const resetFormData = () => {
-  Object.keys(formData).forEach((key) => {
-    formData[key] = '';
-  });
-};
-
-onMounted(() => {
-  if (props.action === 'edit') {
-    setFormDataForChange()
-  }
-  else {
-    resetFormData()
-  }
-})
-
-watch(
-  [() => props.action, props.initialData],
-  ([newAction]) => {
-    if (newAction === 'edit') {
-      setFormDataForChange();
-    } else if(newAction === 'add') {
-      resetFormData();
-    }
-  }
-);
-
 </script>
 
 <style lang="scss" scoped src="./equipment-form.scss" />

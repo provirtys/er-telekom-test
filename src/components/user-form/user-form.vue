@@ -13,29 +13,61 @@
   </form>
 </template>
 
-<script setup>
-import { ref } from 'vue';
-import VInput from '@ui/v-input/v-input.vue'
-import VButton from '@/components/ui/v-button/v-button.vue';
+<script>
+import { defineComponent, ref } from 'vue';
+import VButton from '@components/ui/v-button/v-button.vue';
+import VInput from '@ui/v-input/v-input.vue';
 
-const props = defineProps({
-  title: {
-    type: String,
-    required: false,
-    default: '',
+/**
+ * Компонент формы пользователя. Используется при регистрации и авторизации пользователя
+ * 
+ * @props {String} title - Заголовок формы
+ * @props {String} btnText - Текст кнопки отправки
+ * 
+ * @emits {submit} - Событие отправки формы
+ * 
+ * @example <user-form title="Вход" btnText="Войти" @submit="signInHandler" />
+ */
+export default defineComponent({
+  name: 'UserForm',
+  components: {
+    VInput,
+    VButton
   },
-  btnText: {
-    type: String,
-    required: false,
-    default: 'Отправить',
+  props: {
+    /**
+     * Заголовок формы
+     */
+    title: {
+      type: String,
+      required: false,
+      default: '',
+    },
+    /**
+     * Текст кнопки отправки
+     */
+    btnText: {
+      type: String,
+      required: false,
+      default: 'Отправить',
+    }
+  },
+  emits: ['submit'],
+  setup(_, { emit }) {
+    const email = ref('');
+    const password = ref('');
+
+    const handleSubmit = () => {
+      emit('submit', { email: email.value, password: password.value });
+    };
+
+    return {
+      email,
+      password,
+      handleSubmit,
+    };
   }
-})
-
-defineEmits(['submit'])
-
-const email = ref('')
-const password = ref('')
-
+});
 </script>
 
-<style lang=" scss" scoped src="./user-form.scss" />
+<style lang="scss" scoped src="./user-form.scss" />
