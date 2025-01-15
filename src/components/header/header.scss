@@ -1,0 +1,47 @@
+.header {
+
+  border-bottom: 1px solid var(--blue);
+
+  &__container {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+  }
+
+  &__logo {
+    fill: var(--blue);
+    color: var(--orange);
+    max-width: 100%;
+
+    svg{
+      max-width: 100%;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 10px
+  }
+
+  &__action {
+    @include font(18px, 24px, 400);
+
+    span{
+      margin-right: 5px;
+    }
+  }
+}
+
+@include phone {
+
+  .header {
+
+    &__logo {
+      width: 150px;
+    }
+
+    &__action span {
+      display: none;
+    }
+  }
+}

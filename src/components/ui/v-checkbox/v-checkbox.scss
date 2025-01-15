@@ -1,0 +1,11 @@
+.checkbox {
+  display: flex;
+  align-items: center;
+
+  &__input {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+  }
+
+}
